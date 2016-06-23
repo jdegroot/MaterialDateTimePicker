@@ -61,93 +61,94 @@ public class DatePickerDialog extends DialogFragment implements
 
     private static final String TAG = "DatePickerDialog";
 
-    private static final int UNINITIALIZED = -1;
-    private static final int MONTH_AND_DAY_VIEW = 0;
-    private static final int YEAR_VIEW = 1;
-
-    private static final String KEY_SELECTED_YEAR = "year";
-    private static final String KEY_SELECTED_MONTH = "month";
-    private static final String KEY_SELECTED_DAY = "day";
-    private static final String KEY_LIST_POSITION = "list_position";
-    private static final String KEY_WEEK_START = "week_start";
-    private static final String KEY_YEAR_START = "year_start";
-    private static final String KEY_YEAR_END = "year_end";
-    private static final String KEY_CURRENT_VIEW = "current_view";
-    private static final String KEY_LIST_POSITION_OFFSET = "list_position_offset";
-    private static final String KEY_MIN_DATE = "min_date";
-    private static final String KEY_MAX_DATE = "max_date";
-    private static final String KEY_HIGHLIGHTED_DAYS = "highlighted_days";
-    private static final String KEY_SELECTABLE_DAYS = "selectable_days";
-    private static final String KEY_THEME_DARK = "theme_dark";
-    private static final String KEY_THEME_DARK_CHANGED = "theme_dark_changed";
-    private static final String KEY_ACCENT = "accent";
-    private static final String KEY_VIBRATE = "vibrate";
-    private static final String KEY_DISMISS = "dismiss";
-    private static final String KEY_AUTO_DISMISS = "auto_dismiss";
-    private static final String KEY_DEFAULT_VIEW = "default_view";
-    private static final String KEY_TITLE = "title";
-    private static final String KEY_OK_RESID = "ok_resid";
-    private static final String KEY_OK_STRING = "ok_string";
-    private static final String KEY_CANCEL_RESID = "cancel_resid";
-    private static final String KEY_CANCEL_STRING = "cancel_string";
-
-
-    private static final int DEFAULT_START_YEAR = 1900;
-    private static final int DEFAULT_END_YEAR = 2100;
-
-    private static final int ANIMATION_DURATION = 300;
-    private static final int ANIMATION_DELAY = 500;
-
-    private static SimpleDateFormat YEAR_FORMAT = new SimpleDateFormat("yyyy", Locale.getDefault());
-    private static SimpleDateFormat DAY_FORMAT = new SimpleDateFormat("dd", Locale.getDefault());
-
-    private final Calendar mCalendar = Calendar.getInstance();
     private OnDateSetListener mCallBack;
-    private HashSet<OnDateChangedListener> mListeners = new HashSet<>();
-    private DialogInterface.OnCancelListener mOnCancelListener;
-    private DialogInterface.OnDismissListener mOnDismissListener;
+    protected HashSet<OnDateChangedListener> mListeners = new HashSet<>();
 
-    private AccessibleDateAnimator mAnimator;
+    protected static final int UNINITIALIZED = -1;
+    protected static final int MONTH_AND_DAY_VIEW = 0;
+    protected static final int YEAR_VIEW = 1;
 
-    private TextView mDayOfWeekView;
-    private LinearLayout mMonthAndDayView;
-    private TextView mSelectedMonthTextView;
-    private TextView mSelectedDayTextView;
-    private TextView mYearView;
-    private DayPickerView mDayPickerView;
-    private YearPickerView mYearPickerView;
+    protected static final String KEY_SELECTED_YEAR = "year";
+    protected static final String KEY_SELECTED_MONTH = "month";
+    protected static final String KEY_SELECTED_DAY = "day";
+    protected static final String KEY_LIST_POSITION = "list_position";
+    protected static final String KEY_WEEK_START = "week_start";
+    protected static final String KEY_YEAR_START = "year_start";
+    protected static final String KEY_YEAR_END = "year_end";
+    protected static final String KEY_CURRENT_VIEW = "current_view";
+    protected static final String KEY_LIST_POSITION_OFFSET = "list_position_offset";
+    protected static final String KEY_MIN_DATE = "min_date";
+    protected static final String KEY_MAX_DATE = "max_date";
+    protected static final String KEY_HIGHLIGHTED_DAYS = "highlighted_days";
+    protected static final String KEY_SELECTABLE_DAYS = "selectable_days";
+    protected static final String KEY_THEME_DARK = "theme_dark";
+    protected static final String KEY_THEME_DARK_CHANGED = "theme_dark_changed";
+    protected static final String KEY_ACCENT = "accent";
+    protected static final String KEY_VIBRATE = "vibrate";
+    protected static final String KEY_DISMISS = "dismiss";
+    protected static final String KEY_AUTO_DISMISS = "auto_dismiss";
+    protected static final String KEY_DEFAULT_VIEW = "default_view";
+    protected static final String KEY_TITLE = "title";
+    protected static final String KEY_OK_RESID = "ok_resid";
+    protected static final String KEY_OK_STRING = "ok_string";
+    protected static final String KEY_CANCEL_RESID = "cancel_resid";
+    protected static final String KEY_CANCEL_STRING = "cancel_string";
 
-    private int mCurrentView = UNINITIALIZED;
 
-    private int mWeekStart = mCalendar.getFirstDayOfWeek();
-    private int mMinYear = DEFAULT_START_YEAR;
-    private int mMaxYear = DEFAULT_END_YEAR;
-    private String mTitle;
-    private Calendar mMinDate;
-    private Calendar mMaxDate;
-    private Calendar[] highlightedDays;
-    private Calendar[] selectableDays;
-    private boolean mThemeDark = false;
-    private boolean mThemeDarkChanged = false;
-    private int mAccentColor = -1;
-    private boolean mVibrate = true;
-    private boolean mDismissOnPause = false;
-    private boolean mAutoDismiss = false;
-    private int mDefaultView = MONTH_AND_DAY_VIEW;
-    private int mOkResid = R.string.mdtp_ok;
-    private String mOkString;
-    private int mCancelResid = R.string.mdtp_cancel;
-    private String mCancelString;
+    protected static final int DEFAULT_START_YEAR = 1900;
+    protected static final int DEFAULT_END_YEAR = 2100;
 
-    private HapticFeedbackController mHapticFeedbackController;
+    protected static final int ANIMATION_DURATION = 300;
+    protected static final int ANIMATION_DELAY = 500;
 
-    private boolean mDelayAnimation = true;
+    protected static SimpleDateFormat YEAR_FORMAT = new SimpleDateFormat("yyyy", Locale.getDefault());
+    protected static SimpleDateFormat DAY_FORMAT = new SimpleDateFormat("dd", Locale.getDefault());
+
+    protected final Calendar mCalendar = Calendar.getInstance();
+    protected DialogInterface.OnCancelListener mOnCancelListener;
+    protected DialogInterface.OnDismissListener mOnDismissListener;
+
+    protected AccessibleDateAnimator mAnimator;
+
+    protected TextView mDayOfWeekView;
+    protected LinearLayout mMonthAndDayView;
+    protected TextView mSelectedMonthTextView;
+    protected TextView mSelectedDayTextView;
+    protected TextView mYearView;
+    protected DayPickerView mDayPickerView;
+    protected YearPickerView mYearPickerView;
+
+    protected int mCurrentView = UNINITIALIZED;
+
+    protected int mWeekStart = mCalendar.getFirstDayOfWeek();
+    protected int mMinYear = DEFAULT_START_YEAR;
+    protected int mMaxYear = DEFAULT_END_YEAR;
+    protected String mTitle;
+    protected Calendar mMinDate;
+    protected Calendar mMaxDate;
+    protected Calendar[] highlightedDays;
+    protected Calendar[] selectableDays;
+    protected boolean mThemeDark = false;
+    protected boolean mThemeDarkChanged = false;
+    protected int mAccentColor = -1;
+    protected boolean mVibrate = true;
+    protected boolean mDismissOnPause = false;
+    protected boolean mAutoDismiss = false;
+    protected int mDefaultView = MONTH_AND_DAY_VIEW;
+    protected int mOkResid = R.string.mdtp_ok;
+    protected String mOkString;
+    protected int mCancelResid = R.string.mdtp_cancel;
+    protected String mCancelString;
+
+    protected HapticFeedbackController mHapticFeedbackController;
+
+    protected boolean mDelayAnimation = true;
 
     // Accessibility strings.
-    private String mDayPickerDescription;
-    private String mSelectDay;
-    private String mYearPickerDescription;
-    private String mSelectYear;
+    protected String mDayPickerDescription;
+    protected String mSelectDay;
+    protected String mYearPickerDescription;
+    protected String mSelectYear;
 
     /**
      * The callback used to indicate the user is done filling in the date.
@@ -289,13 +290,14 @@ public class DatePickerDialog extends DialogFragment implements
             mAutoDismiss = savedInstanceState.getBoolean(KEY_AUTO_DISMISS);
             mTitle = savedInstanceState.getString(KEY_TITLE);
             mOkResid = savedInstanceState.getInt(KEY_OK_RESID);
+            mOkResid = savedInstanceState.getInt(KEY_OK_RESID);
             mOkString = savedInstanceState.getString(KEY_OK_STRING);
             mCancelResid = savedInstanceState.getInt(KEY_CANCEL_RESID);
             mCancelString = savedInstanceState.getString(KEY_CANCEL_STRING);
         }
 
         final Activity activity = getActivity();
-        mDayPickerView = new SimpleDayPickerView(activity, this);
+        mDayPickerView = getDayPickerView(activity);
         mYearPickerView = new YearPickerView(activity, this);
 
         // if theme mode has not been set by java code, check if it is specified in Style.xml
@@ -380,6 +382,11 @@ public class DatePickerDialog extends DialogFragment implements
         return view;
     }
 
+    protected DayPickerView getDayPickerView(Activity activity)
+    {
+        return new SimpleDayPickerView(activity, this);
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
@@ -412,7 +419,7 @@ public class DatePickerDialog extends DialogFragment implements
         if(mOnDismissListener != null) mOnDismissListener.onDismiss(dialog);
     }
 
-    private void setCurrentView(final int viewIndex) {
+    protected void setCurrentView(final int viewIndex) {
         long millis = mCalendar.getTimeInMillis();
 
         switch (viewIndex) {
@@ -459,7 +466,7 @@ public class DatePickerDialog extends DialogFragment implements
         }
     }
 
-    private void updateDisplay(boolean announce) {
+    protected void updateDisplay(boolean announce) {
         if (mDayOfWeekView != null) {
             if(mTitle != null) mDayOfWeekView.setText(mTitle.toUpperCase(Locale.getDefault()));
             else {
@@ -740,7 +747,7 @@ public class DatePickerDialog extends DialogFragment implements
     // change the selected day number to the last day of the selected month or year.
     //      e.g. Switching from Mar to Apr when Mar 31 is selected -> Apr 30
     //      e.g. Switching from 2012 to 2013 when Feb 29, 2012 is selected -> Feb 28, 2013
-    private void adjustDayInMonthIfNeeded(Calendar calendar) {
+    protected void adjustDayInMonthIfNeeded(Calendar calendar) {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         if (day > daysInMonth) {
@@ -781,7 +788,7 @@ public class DatePickerDialog extends DialogFragment implements
         }
     }
 
-    private void updatePickers() {
+    protected void updatePickers() {
         for(OnDateChangedListener listener : mListeners) listener.onDateChanged();
     }
 
@@ -857,7 +864,7 @@ public class DatePickerDialog extends DialogFragment implements
         );
     }
 
-    private boolean isSelectable(int year, int month, int day) {
+    protected boolean isSelectable(int year, int month, int day) {
         for (Calendar c : selectableDays) {
             if(year < c.get(Calendar.YEAR)) break;
             if(year > c.get(Calendar.YEAR)) continue;
@@ -870,7 +877,7 @@ public class DatePickerDialog extends DialogFragment implements
         return false;
     }
 
-    private boolean isBeforeMin(int year, int month, int day) {
+    protected boolean isBeforeMin(int year, int month, int day) {
         if (mMinDate == null) {
             return false;
         }
@@ -894,7 +901,7 @@ public class DatePickerDialog extends DialogFragment implements
         }
     }
 
-    private boolean isBeforeMin(Calendar calendar) {
+    protected boolean isBeforeMin(Calendar calendar) {
         return isBeforeMin(
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -902,7 +909,7 @@ public class DatePickerDialog extends DialogFragment implements
         );
     }
 
-    private boolean isAfterMax(int year, int month, int day) {
+    protected boolean isAfterMax(int year, int month, int day) {
         if (mMaxDate == null) {
             return false;
         }
@@ -926,7 +933,7 @@ public class DatePickerDialog extends DialogFragment implements
         }
     }
 
-    private boolean isAfterMax(Calendar calendar) {
+    protected boolean isAfterMax(Calendar calendar) {
         return isAfterMax(
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -934,7 +941,7 @@ public class DatePickerDialog extends DialogFragment implements
         );
     }
 
-    private void setToNearestDate(Calendar calendar) {
+    protected void setToNearestDate(Calendar calendar) {
         if(selectableDays != null) {
             long distance = Long.MAX_VALUE;
             Calendar currentBest = calendar;
