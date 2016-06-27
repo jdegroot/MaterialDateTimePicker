@@ -70,7 +70,8 @@ public class DayPickerDialog extends DatePickerDialog {
     public void initialize(OnDaySetListener callBack, int dayOfMonth) {
         mCallBack = callBack;
 
-        // Preset with a month with 31 days
+        // Preset with a month with 31 days and sunday as first day of the week
+        mCalendar.setFirstDayOfWeek(Calendar.SUNDAY);
         mCalendar.set(Calendar.YEAR, FIXED_YEAR);
         mCalendar.set(Calendar.MONTH, FIXED_MONTH);
 
