@@ -100,9 +100,9 @@ public class DayPickerDialog extends DatePickerDialog {
 
         // Update visuals
         if (mTitle == null || mTitle.isEmpty()) {
-            mDayOfWeekView.setVisibility(View.GONE);
+            if (mDayOfWeekView != null) mDayOfWeekView.setVisibility(View.GONE);
         } else {
-            mDayOfWeekView.setVisibility(View.VISIBLE);
+            if (mDayOfWeekView != null) mDayOfWeekView.setVisibility(View.VISIBLE);
         }
         mSelectedMonthTextView.setVisibility(View.GONE);
         mYearView.setVisibility(View.GONE);
