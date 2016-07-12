@@ -104,7 +104,7 @@ public class DatePickerDialog extends DialogFragment implements
     protected static SimpleDateFormat YEAR_FORMAT = new SimpleDateFormat("yyyy", Locale.getDefault());
     protected static SimpleDateFormat DAY_FORMAT = new SimpleDateFormat("dd", Locale.getDefault());
 
-    protected final Calendar mCalendar = Calendar.getInstance();
+    protected Calendar mCalendar;
     protected DialogInterface.OnCancelListener mOnCancelListener;
     protected DialogInterface.OnDismissListener mOnDismissListener;
 
@@ -120,7 +120,7 @@ public class DatePickerDialog extends DialogFragment implements
 
     protected int mCurrentView = UNINITIALIZED;
 
-    protected int mWeekStart = mCalendar.getFirstDayOfWeek();
+    protected int mWeekStart;
     protected int mMinYear = DEFAULT_START_YEAR;
     protected int mMaxYear = DEFAULT_END_YEAR;
     protected String mTitle;
@@ -175,7 +175,8 @@ public class DatePickerDialog extends DialogFragment implements
 
 
     public DatePickerDialog() {
-        // Empty constructor required for dialog fragment.
+        mCalendar = Calendar.getInstance();
+        mWeekStart = mCalendar.getFirstDayOfWeek();
     }
 
     /**
