@@ -18,12 +18,14 @@ package com.wdullaer.materialdatetimepicker.date;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.wdullaer.materialdatetimepicker.R;
+import com.wdullaer.materialdatetimepicker.Utils;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -40,6 +42,7 @@ public class DayPickerDialog extends DatePickerDialog {
     private static final int FIXED_MONTH = 11;
 
     private OnDaySetListener mCallBack;
+    private OnDayTappedListener mTappedCallback;
 
     /**
      * The callback used to indicate the user is done filling in the date.
@@ -53,6 +56,19 @@ public class DayPickerDialog extends DatePickerDialog {
         void onDaySet(DayPickerDialog view, int dayOfMonth);
     }
 
+    /**
+     * The callback used to indicate the user has tapped a day and
+     * get a string to display on the header label text.
+     */
+    public interface OnDayTappedListener {
+
+        /**
+         * @param view       The view associated with this listener.
+         * @param dayOfMonth The day of the month that was tapped.
+         */
+        String onDayTapped(DayPickerDialog view, int dayOfMonth);
+    }
+
     public DayPickerDialog() {
         mCalendar = Calendar.getInstance(Locale.US);
         mWeekStart = mCalendar.getFirstDayOfWeek();
@@ -63,14 +79,16 @@ public class DayPickerDialog extends DatePickerDialog {
      * @param dayOfMonth The initial day of the dialog.
      */
     public static DayPickerDialog newInstance(OnDaySetListener callBack,
+                                              OnDayTappedListener tapCallBack,
                                               int dayOfMonth) {
         DayPickerDialog ret = new DayPickerDialog();
-        ret.initialize(callBack, dayOfMonth);
+        ret.initialize(callBack, tapCallBack, dayOfMonth);
         return ret;
     }
 
-    public void initialize(OnDaySetListener callBack, int dayOfMonth) {
+    public void initialize(OnDaySetListener callBack, OnDayTappedListener tapCallBack, int dayOfMonth) {
         mCallBack = callBack;
+        mTappedCallback = tapCallBack;
 
         // Preset with a month with 31 days and sunday as first day of the week
         mCalendar.setFirstDayOfWeek(Calendar.SUNDAY);
@@ -133,6 +151,36 @@ public class DayPickerDialog extends DatePickerDialog {
         return new SingleDayPickerView(activity, this);
     }
 
+    @Override
+    protected void updateDisplay(boolean announce) {
+        if (mDayOfWeekView != null) {
+            if(mTitle != null) mDayOfWeekView.setText(mTitle.toUpperCase(Locale.getDefault()));
+            else {
+                mDayOfWeekView.setText(mCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG,
+                        Locale.getDefault()).toUpperCase(Locale.getDefault()));
+            }
+        }
+
+        mSelectedMonthTextView.setText(mCalendar.getDisplayName(Calendar.MONTH, Calendar.SHORT,
+                Locale.getDefault()).toUpperCase(Locale.getDefault()));
+        notifyOnDayTappedListener();
+        mYearView.setText(YEAR_FORMAT.format(mCalendar.getTime()));
+
+        // Accessibility.
+        long millis = mCalendar.getTimeInMillis();
+        mAnimator.setDateMillis(millis);
+        int flags = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR;
+        String monthAndDayText = DateUtils.formatDateTime(getActivity(), millis, flags);
+        mMonthAndDayView.setContentDescription(monthAndDayText);
+
+        if (announce) {
+            flags = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR;
+            String fullDateText = DateUtils.formatDateTime(getActivity(), millis, flags);
+            Utils.tryAccessibilityAnnounce(mAnimator, fullDateText);
+        }
+    }
+
+
     /*
      * Callback
      */
@@ -141,6 +189,16 @@ public class DayPickerDialog extends DatePickerDialog {
     public void notifyOnDateListener() {
         if (mCallBack != null) {
             mCallBack.onDaySet(DayPickerDialog.this, mCalendar.get(Calendar.DAY_OF_MONTH));
+        }
+    }
+
+    public void notifyOnDayTappedListener() {
+        if (mTappedCallback != null) {
+            String label = mTappedCallback.onDayTapped(DayPickerDialog.this, mCalendar.get(Calendar.DAY_OF_MONTH));
+            mSelectedDayTextView.setText(label);
+        }
+        else {
+            mSelectedDayTextView.setText(DAY_FORMAT.format(mCalendar.getTime()));
         }
     }
 

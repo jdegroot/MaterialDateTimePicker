@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements
                 Calendar now = Calendar.getInstance();
                 DayPickerDialog dpd = DayPickerDialog.newInstance(
                         MainActivity.this,
+                        null,
                         now.get(Calendar.DAY_OF_MONTH)
                 );
                 dpd.setThemeDark(modeDarkDay.isChecked());
