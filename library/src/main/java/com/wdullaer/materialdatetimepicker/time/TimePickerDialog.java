@@ -77,6 +77,7 @@ public class TimePickerDialog extends DialogFragment implements
     private static final String KEY_MIN_TIME = "min_time";
     private static final String KEY_MAX_TIME = "max_time";
     private static final String KEY_ENABLE_SECONDS = "enable_seconds";
+    private static final String KEY_ENABLE_MINUTES = "enable_minutes";
     private static final String KEY_OK_RESID = "ok_resid";
     private static final String KEY_OK_STRING = "ok_string";
     private static final String KEY_CANCEL_RESID = "cancel_resid";
@@ -128,6 +129,7 @@ public class TimePickerDialog extends DialogFragment implements
     private Timepoint mMinTime;
     private Timepoint mMaxTime;
     private boolean mEnableSeconds;
+    private boolean mEnableMinutes;
     private int mOkResid;
     private String mOkString;
     private int mCancelResid;
@@ -196,6 +198,7 @@ public class TimePickerDialog extends DialogFragment implements
         mVibrate = true;
         mDismissOnPause = false;
         mEnableSeconds = false;
+        mEnableMinutes = true;
         mOkResid = R.string.mdtp_ok;
         mCancelResid = R.string.mdtp_cancel;
         mAllowAutoAdvance = true;
@@ -288,6 +291,14 @@ public class TimePickerDialog extends DialogFragment implements
      */
     public void enableSeconds(boolean enableSeconds) {
         mEnableSeconds = enableSeconds;
+    }
+
+    /**
+     * Set whether an additional picker for minutes should be shown
+     * @param enableMinutes true if the minutes picker should be shown
+     */
+    public void enableMinutes(boolean enableMinutes) {
+        mEnableMinutes = enableMinutes;
     }
 
     @SuppressWarnings("unused")
@@ -449,6 +460,7 @@ public class TimePickerDialog extends DialogFragment implements
             mMinTime = savedInstanceState.getParcelable(KEY_MIN_TIME);
             mMaxTime = savedInstanceState.getParcelable(KEY_MAX_TIME);
             mEnableSeconds = savedInstanceState.getBoolean(KEY_ENABLE_SECONDS);
+            mEnableMinutes = savedInstanceState.getBoolean(KEY_ENABLE_MINUTES);
             mOkResid = savedInstanceState.getInt(KEY_OK_RESID);
             mOkString = savedInstanceState.getString(KEY_OK_STRING);
             mCancelResid = savedInstanceState.getInt(KEY_CANCEL_RESID);
@@ -527,8 +539,11 @@ public class TimePickerDialog extends DialogFragment implements
         mMinuteView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                setCurrentItemShowing(MINUTE_INDEX, true, false, true);
-                tryVibrate();
+                if (mEnableMinutes)
+                {
+                    setCurrentItemShowing(MINUTE_INDEX, true, false, true);
+                    tryVibrate();
+                }
             }
         });
         mSecondView.setOnClickListener(new OnClickListener() {
@@ -750,6 +765,7 @@ public class TimePickerDialog extends DialogFragment implements
             outState.putParcelable(KEY_MIN_TIME, mMinTime);
             outState.putParcelable(KEY_MAX_TIME, mMaxTime);
             outState.putBoolean(KEY_ENABLE_SECONDS, mEnableSeconds);
+            outState.putBoolean(KEY_ENABLE_MINUTES, mEnableMinutes);
             outState.putInt(KEY_OK_RESID, mOkResid);
             outState.putString(KEY_OK_STRING, mOkString);
             outState.putInt(KEY_CANCEL_RESID, mCancelResid);
@@ -775,7 +791,7 @@ public class TimePickerDialog extends DialogFragment implements
     @Override
     public void advancePicker(int index) {
         if(!mAllowAutoAdvance) return;
-        if(index == HOUR_INDEX) {
+        if(index == HOUR_INDEX && mEnableMinutes) {
             setCurrentItemShowing(MINUTE_INDEX, true, true, false);
 
             String announcement = mSelectHours + ". " + mTimePicker.getMinutes();
